@@ -1,0 +1,20 @@
+{
+  "name": "sugarcube-ajax-save",
+  "version": "0.1.0",
+  "description": "Sugarcube 2 extension for sending serialized save data and getting serialized save data form url.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/DustinWoods/sugarcube-ajax-save.git"
+  },
+  "author": "Dustin Woods",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DustinWoods/sugarcube-ajax-save/issues"
+  },
+  "homepage": "https://github.com/DustinWoods/sugarcube-ajax-save#readme",
+  "dependencies": {}
+}

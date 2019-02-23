@@ -78,7 +78,6 @@ export default function ({ Config, State, $document, jQuery, LoadScreen, LZStrin
 			type: 'GET',
 			dataType: 'text',
 			success: (result, status, xhr) => {
-				console.log(xhr.status);
 				if(xhr.status === 204 || result === '') {
 					// No save state!
 					// Call even with null parameter, because nothing loaded

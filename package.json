@@ -16,5 +16,7 @@
     "url": "https://github.com/DustinWoods/sugarcube-ajax-save/issues"
   },
   "homepage": "https://github.com/DustinWoods/sugarcube-ajax-save#readme",
-  "dependencies": {}
+  "dependencies": {
+    "js-cookie": "^2.2.0"
+  }
 }

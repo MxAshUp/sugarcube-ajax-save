@@ -1,3 +1,5 @@
+import Cookie from 'js-cookie';
+
 export default function ({ Config, State, $document, jQuery, LoadScreen, LZString, stateUrlPath }) {
 
 	// Take form SugarCube 2 src/save
@@ -60,27 +62,39 @@ export default function ({ Config, State, $document, jQuery, LoadScreen, LZStrin
       data,
     });
 
-  };
+	};
 
-	jQuery.ajax({
-		url: stateUrlPath,
-		type: 'GET',
-		dataType: 'text',
-		success: (result) => {
-			// Attempt to load saved data
-			try {
-				// Let's try to parse first, so if there's simply a parse error, we can catch it before SugarCube does
-				JSON.parse(LZString.decompressFromBase64(result));
-				Save.deserialize(result);
-			} catch (ex) {
-				// Could not load data.
-				// TODO - something
-			}
-		},
-		complete: (result, status) => {
-			// Finally start saving, now that we've loaded
-			LoadScreen.unlock(lockId);
-			$document.on(':passageend', ajaxSave);
-		},
+	const isResetting = Cookie.get('sugarcube-engine-resetting');
+
+	if(isResetting) {
+		Cookie.remove('sugarcube-engine-resetting');
+		LoadScreen.unlock(lockId);
+		$document.on(':passageend', ajaxSave);
+	} else {
+		jQuery.ajax({
+			url: stateUrlPath,
+			type: 'GET',
+			dataType: 'text',
+			success: (result) => {
+				// Attempt to load saved data
+				try {
+					// Let's try to parse first, so if there's simply a parse error, we can catch it before SugarCube does
+					JSON.parse(LZString.decompressFromBase64(result));
+					Save.deserialize(result);
+				} catch (ex) {
+					// Could not load data.
+					// TODO - something
+				}
+			},
+			complete: (result, status) => {
+				// Finally start saving, now that we've loaded
+				LoadScreen.unlock(lockId);
+				$document.on(':passageend', ajaxSave);
+			},
+		});
+	}
+
+	$document.on(':enginerestart', () => {
+		Cookie.set('sugarcube-engine-resetting', 'true');
 	});
 }

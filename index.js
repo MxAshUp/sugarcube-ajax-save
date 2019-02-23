@@ -69,19 +69,30 @@ export default function ({ Config, State, $document, jQuery, LoadScreen, LZStrin
 	if(isResetting) {
 		Cookie.remove('sugarcube-engine-resetting');
 		LoadScreen.unlock(lockId);
+		// Call even with null parameter, because nothing loaded
+		jQuery.event.trigger(':ajaxsavestateloaded', null);
 		$document.on(':passageend', ajaxSave);
 	} else {
 		jQuery.ajax({
 			url: stateUrlPath,
 			type: 'GET',
 			dataType: 'text',
-			success: (result) => {
+			success: (result, status, xhr) => {
+				console.log(xhr.status);
+				if(xhr.status === 204 || result === '') {
+					// No save state!
+					// Call even with null parameter, because nothing loaded
+					jQuery.event.trigger(':ajaxsavestateloaded', null);
+					return;
+				}
 				// Attempt to load saved data
 				try {
 					// Let's try to parse first, so if there's simply a parse error, we can catch it before SugarCube does
 					JSON.parse(LZString.decompressFromBase64(result));
 					Save.deserialize(result);
+					jQuery.event.trigger(':ajaxsavestateloaded', result);
 				} catch (ex) {
+					jQuery.event.trigger(':ajaxsavestateloaderror', ex);
 					// Could not load data.
 					// TODO - something
 				}

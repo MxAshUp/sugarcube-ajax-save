@@ -95,6 +95,9 @@ export default function ({ Config, State, $document, jQuery, LoadScreen, LZStrin
 					// TODO - something
 				}
 			},
+			error: (xhr, status, err) => {
+				jQuery.event.trigger(':ajaxsavestateloaderror', err);
+			},
 			complete: (result, status) => {
 				// Finally start saving, now that we've loaded
 				LoadScreen.unlock(lockId);

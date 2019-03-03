@@ -1,6 +1,6 @@
 import Cookie from 'js-cookie';
 
-export default function ({ Config, State, $document, jQuery, LoadScreen, LZString, stateUrlPath }) {
+export default function ({ Config, State, $document, jQuery, LoadScreen, LZString, stateUrlPath, Save }) {
 
 	// Take form SugarCube 2 src/save
 	function sateMarshal(supplemental) {
@@ -46,7 +46,6 @@ export default function ({ Config, State, $document, jQuery, LoadScreen, LZStrin
 
 	// Lock the screen until we can confirm if there's a save to load form server
 	const lockId = LoadScreen.lock();
-	LoadScreen.init();
 
   const ajaxSave = () => {
 		const data = ajaxAutosaveSave();
